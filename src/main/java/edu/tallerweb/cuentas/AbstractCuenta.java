@@ -32,7 +32,7 @@ public abstract class AbstractCuenta {
 		return saldo;
 	}
 
-	public void setSaldo(double saldo) {
+	public void setSaldo(final double saldo) {
 		this.saldo = saldo;
 	}
 

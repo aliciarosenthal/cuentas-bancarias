@@ -25,8 +25,7 @@ public class CuentaCorriente extends AbstractCuenta {
 	 */
 	 private final Double descubiertoTotal;
      private Double descubierto = 0.0;
-     private final Double comision = 1.05;
-     
+     private final Double comision = 1.05;     
 	public CuentaCorriente(final Double descubiertoTotal) {
 		this.descubiertoTotal = descubiertoTotal;
 	}
@@ -45,6 +44,10 @@ public class CuentaCorriente extends AbstractCuenta {
 			this.setSaldo(this.getSaldo() + monto);
 		} else {
 			this.setSaldo((this.getSaldo() + monto) + this.descubierto);
+			this.descubierto = this.descubierto + monto;
+			if (this.descubierto > 0) {
+				this.descubierto = 0.0;
+			}
 		}
 	}
 

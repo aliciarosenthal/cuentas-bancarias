@@ -13,12 +13,20 @@ public abstract class AbstractCuenta {
 	 * Agrega a la cuenta el monto determinado
 	 * @param monto a depositar
 	 */
-	public abstract void depositar(final Double monto);
+	protected double saldo;
+
+	public void depositar(final Double monto) {
+		this.saldo += monto;
+	}
 
 	/**
 	 * Retira de la cuenta el monto determinado
 	 * @param monto a extraer
 	 */
 	public abstract void extraer(final Double monto);
+
+	public Double getSaldo() {
+		return this.saldo;
+	}
 
 }

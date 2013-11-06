@@ -16,25 +16,34 @@ package edu.tallerweb.cuentas;
  * Pasaremos a deberle al banco $ 105 en total: los $ 100 que
  * nos cubrió, más el 5% adicional sobre el descubierto otorgado.
  */
-public class CuentaCorriente {
+public class CuentaCorriente extends AbstractCuenta{
 
 	/**
 	 * Toda cuenta corriente se inicia con un límite total
 	 * para el descubierto.
 	 * @param descubiertoTotal
 	 */
-	public CuentaCorriente(final Double descubiertoTotal) {
-		throw new RuntimeException("No implementado aún");
-	}
+	 private final Double descubiertoTotal;
+     private Double descubierto=0.0;
+     private final Double comision = 1.05;
 	
+	public CuentaCorriente(final Double descubiertoTotal) {
+		this.descubiertoTotal = descubiertoTotal;
+	}
+
 	/**
 	 * Todo depósito deberá cubrir primero el descubierto,
 	 * si lo hubiera, y luego contar para el saldo de la
 	 * cuenta.
 	 * @param monto a depositar
 	 */
+	@Override
 	public void depositar(final Double monto) {
-		throw new RuntimeException("No implementado aún");
+		if (this.descubierto == 0) {
+			this.saldo += monto;
+		} else {
+			this.saldo = (this.saldo + monto) + this.descubierto;
+		}
 	}
 
 	/**
@@ -45,23 +54,29 @@ public class CuentaCorriente {
 	 * @param monto a extraer
 	 */
 	public void extraer(final Double monto) {
-		throw new RuntimeException("No implementado aún");
-	}
+		if (this.saldo > monto) {
+			this.saldo -= monto;
+		} else if (this.saldo < monto) {
+			if (((monto - this.saldo) * this.comision) > this.descubiertoTotal) {
+				throw new CuentaBancariaException(
+						"No se puede realizar la operaci�n");
+			} else {
+				this.descubierto -= ((monto - this.saldo) * this.comision);
+			}
+		}
+    }
 
 	/**
 	 * Permite saber el saldo de la cuenta
 	 * @return el saldo de la cuenta
 	 */
-	public Double getSaldo() {
-		throw new RuntimeException("No implementado aún");
-	}
 	
 	/**
 	 * Permite saber el saldo en descubierto
 	 * @return el descubierto de la cuenta
 	 */
 	public Double getDescubierto() {
-		throw new RuntimeException("No implementado aún");
+		return this.descubierto;
 	}
 
 }

@@ -5,7 +5,7 @@ package edu.tallerweb.cuentas;
  * quinta extracción de dinero se cobre un costo adicional
  * por extracción de $ 6
  */
-public class CajaAhorros extends AbstractCuenta{
+public class CajaAhorros extends AbstractCuenta {
 
 	/**
 	 * No hay reglas adicionales para el depósito
@@ -17,15 +17,19 @@ public class CajaAhorros extends AbstractCuenta{
 	 * @param monto a extraer
 	 */
 	private int cantextracciones = 0;
-	final double adicional = 6.0;
+	private final double adicional = 6.0;
+	private final int limite = 5;
 
 	public void extraer(final Double monto) {
-		this.cantextracciones++;
-		this.saldo -= monto;
-		if (cantextracciones > 5) {
-			this.saldo -= adicional;
+		if (monto < 0) {
+			throw new CuentaBancariaException("El monto no puede ser negativo");
 		}
-		if (this.saldo < 0.0) {
+		this.cantextracciones++;
+		this.setSaldo(this.getSaldo() - monto);
+		if (cantextracciones > limite) {
+			this.setSaldo(this.getSaldo() - adicional);
+		}
+		if (this.getSaldo() < 0.0) {
 			throw new CuentaBancariaException("Cuenta sin saldo");
 		}
 	}

@@ -16,7 +16,7 @@ package edu.tallerweb.cuentas;
  * Pasaremos a deberle al banco $ 105 en total: los $ 100 que
  * nos cubrió, más el 5% adicional sobre el descubierto otorgado.
  */
-public class CuentaCorriente extends AbstractCuenta{
+public class CuentaCorriente extends AbstractCuenta {
 
 	/**
 	 * Toda cuenta corriente se inicia con un límite total
@@ -24,9 +24,9 @@ public class CuentaCorriente extends AbstractCuenta{
 	 * @param descubiertoTotal
 	 */
 	 private final Double descubiertoTotal;
-     private Double descubierto=0.0;
+     private Double descubierto = 0.0;
      private final Double comision = 1.05;
-	
+     
 	public CuentaCorriente(final Double descubiertoTotal) {
 		this.descubiertoTotal = descubiertoTotal;
 	}
@@ -39,10 +39,12 @@ public class CuentaCorriente extends AbstractCuenta{
 	 */
 	@Override
 	public void depositar(final Double monto) {
-		if (this.descubierto == 0) {
-			this.saldo += monto;
+		if (monto < 0) {
+			throw new CuentaBancariaException("El monto no puede ser negativo");
+		} else if (this.descubierto == 0) {
+			this.setSaldo(this.getSaldo() + monto);
 		} else {
-			this.saldo = (this.saldo + monto) + this.descubierto;
+			this.setSaldo((this.getSaldo() + monto) + this.descubierto);
 		}
 	}
 
@@ -54,14 +56,16 @@ public class CuentaCorriente extends AbstractCuenta{
 	 * @param monto a extraer
 	 */
 	public void extraer(final Double monto) {
-		if (this.saldo > monto) {
-			this.saldo -= monto;
-		} else if (this.saldo < monto) {
-			if (((monto - this.saldo) * this.comision) > this.descubiertoTotal) {
+		if (monto < 0) {
+			throw new CuentaBancariaException("El monto no puede ser negativo");
+		} else if (this.getSaldo() > monto) {
+			this.setSaldo(this.getSaldo() - monto);
+		} else if (this.getSaldo() < monto) {
+			if (((monto - this.getSaldo()) * this.comision) > this.descubiertoTotal) {
 				throw new CuentaBancariaException(
 						"No se puede realizar la operaci�n");
 			} else {
-				this.descubierto -= ((monto - this.saldo) * this.comision);
+				this.descubierto -= ((monto - this.getSaldo()) * this.comision);
 			}
 		}
     }
@@ -70,7 +74,6 @@ public class CuentaCorriente extends AbstractCuenta{
 	 * Permite saber el saldo de la cuenta
 	 * @return el saldo de la cuenta
 	 */
-	
 	/**
 	 * Permite saber el saldo en descubierto
 	 * @return el descubierto de la cuenta

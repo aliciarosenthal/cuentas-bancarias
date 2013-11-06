@@ -13,9 +13,12 @@ public abstract class AbstractCuenta {
 	 * Agrega a la cuenta el monto determinado
 	 * @param monto a depositar
 	 */
-	protected double saldo;
+	private double saldo;
 
 	public void depositar(final Double monto) {
+		if (monto < 0) {
+			throw new CuentaBancariaException("El monto no puede ser negativo");
+		}
 		this.saldo += monto;
 	}
 
@@ -25,8 +28,12 @@ public abstract class AbstractCuenta {
 	 */
 	public abstract void extraer(final Double monto);
 
-	public Double getSaldo() {
-		return this.saldo;
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
 	}
 
 }

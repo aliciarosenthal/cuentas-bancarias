@@ -25,7 +25,7 @@ public class CuentaCorriente extends AbstractCuenta {
 	 */
 	 private final Double descubiertoTotal;
      private Double descubierto = 0.0;
-     private final Double comision = 1.05;     
+     private final Double comision = 1.05;  
 	public CuentaCorriente(final Double descubiertoTotal) {
 		this.descubiertoTotal = descubiertoTotal;
 	}
